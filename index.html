@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Daily Focus</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap">
+<style>
+:root{--bg:#F5F2EB;--surface:#FFFDF8;--ink:#2D342C;--muted:#686C60;--line:#DCDDD1;--accent:#45634A;--on-accent:#FFFDF8;--ok:#50734C;--danger:#A14E3F;--on-danger:#FFFDF8;--hero-start:#3D5642;--hero-end:#596A4B;--hero-ink:#FFFDF8;--hero-muted:#E1E7D7;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#1D231E;--surface:#272F28;--ink:#EEECE2;--muted:#B7BEAE;--line:#414B3E;--accent:#B1C69C;--on-accent:#202A20;--ok:#A6C293;--danger:#E2A192;--on-danger:#30201B;--hero-start:#304836;--hero-end:#46573C;--hero-ink:#FFFDF8;--hero-muted:#E1E7D7}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#1D231E;--surface:#272F28;--ink:#EEECE2;--muted:#B7BEAE;--line:#414B3E;--accent:#B1C69C;--on-accent:#202A20;--ok:#A6C293;--danger:#E2A192;--on-danger:#30201B;--hero-start:#304836;--hero-end:#46573C;--hero-ink:#FFFDF8;--hero-muted:#E1E7D7}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Sora,system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:760px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:26px;margin:0;letter-spacing:-.02em}
+h2{font-size:16px;margin:26px 0 8px}
+.sub{color:var(--muted);margin:2px 0 0}
+.prog{margin:18px 0 6px;height:10px;background:var(--line);border-radius:5px;overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:var(--ok);transition:width .3s}
+.stats{display:flex;justify-content:space-between;color:var(--muted);font-size:13px}
+nav{display:flex;gap:4px;margin:20px 0 6px;border-bottom:1px solid var(--line)}
+nav button{flex:1;padding:10px 4px;background:none;border:0;border-bottom:3px solid transparent;color:var(--muted);font:600 15px Sora,system-ui,sans-serif;cursor:pointer}
+nav button[aria-selected=true]{color:var(--ink);border-color:var(--accent)}
+button,input,select{font:inherit;color:inherit}
+button:disabled,select:disabled{opacity:.6;cursor:not-allowed}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+.row label{flex:1;cursor:pointer}
+.row input[type=checkbox]{width:20px;height:20px;accent-color:var(--ok);flex:none}
+.row.done label{color:var(--muted);text-decoration:line-through}
+.x{background:none;border:0;color:var(--muted);cursor:pointer;font-size:18px;padding:2px 8px;border-radius:6px}
+.x:hover{color:var(--ink)}
+.add{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.add input,.add select{padding:9px 10px;border:1px solid var(--line);background:var(--surface);border-radius:8px;min-width:0}
+.add input[type=text]{flex:1;min-width:140px}
+.btn{padding:9px 16px;border:0;border-radius:8px;background:var(--accent);color:var(--on-accent);font-weight:600;cursor:pointer}
+.btn.ghost{background:none;border:1px solid var(--line);color:var(--ink)}
+.timer{text-align:center;padding:22px 0 10px}
+.time{font-size:68px;font-weight:700;letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:1}
+.mode{color:var(--muted);margin:6px 0 14px}
+.timer .add{justify-content:center}
+.chip{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:10px;padding:0 8px}
+.bars{display:flex;gap:8px;align-items:flex-end;height:90px;margin-top:8px}
+.bars div{flex:1;text-align:center;font-size:12px;color:var(--muted);display:flex;flex-direction:column;justify-content:flex-end;height:100%}
+.bars b{display:block;background:var(--accent);border-radius:4px 4px 0 0;min-height:2px;margin-bottom:4px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
+.col h3{font-size:14px;margin:0 0 6px;padding-bottom:6px;border-bottom:2px solid var(--ink)}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-bottom:6px;font-size:14px}
+.item.d span{color:var(--muted);text-decoration:line-through}
+.item .mv{display:flex;gap:2px;margin-top:4px}
+.item .mv button{background:none;border:0;color:var(--muted);cursor:pointer;padding:0 8px;font-size:16px}
+.empty{color:var(--muted);font-size:13px}
+nav button{font-size:13.5px;padding:10px 2px}
+details{border-bottom:1px solid var(--line);padding:8px 0}summary{cursor:pointer;font-weight:600}
+.chip.hot{color:var(--danger);border-color:var(--danger)}
+a{color:var(--accent)}
+.hero{background:linear-gradient(135deg,var(--hero-start),var(--hero-end));color:var(--hero-ink);margin:-20px -16px 0;padding:26px 20px 44px;border-radius:0 0 28px 28px}
+.hero h1{color:var(--hero-ink);font-size:28px}
+.hero .sub,.hero .stats{color:var(--hero-muted)}
+.hero .prog{background:rgba(255,255,255,.25);height:12px}
+.hero .prog i{background:var(--hero-ink)}
+nav{border:0;background:var(--surface);padding:5px;border-radius:18px;box-shadow:0 6px 20px rgba(45,52,44,.10);margin:-26px 4px 10px;position:relative;gap:2px}
+nav button{display:flex;flex-direction:column;align-items:center;border:0;border-radius:13px;padding:7px 2px;font-size:12px;line-height:1.3}
+nav button span{font-size:19px}
+nav button[aria-selected=true]{background:var(--accent);color:var(--on-accent)}
+h2{display:flex;align-items:center;gap:8px}
+h2::before{content:"";width:5px;height:16px;border-radius:3px;background:var(--c,var(--accent))}
+.row{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:6px}
+.row.done{background:color-mix(in srgb,var(--ok) 11%,var(--surface))}
+.chip{padding:1px 9px;border:1px solid var(--c,var(--line));background:color-mix(in srgb,var(--c,transparent) 16%,transparent);color:var(--ink)}
+.btn{border-radius:10px}.btn:active{transform:translateY(1px)}
+.ringw{position:relative;width:220px;height:220px;margin:0 auto}
+.ring{width:100%;height:100%}
+.ring circle{fill:none;stroke-width:8}
+.rt{stroke:var(--line)}
+.rp{stroke:var(--accent);stroke-linecap:round;stroke-dasharray:339.3;stroke-dashoffset:0;transform:rotate(-90deg);transform-origin:center;transition:stroke-dashoffset .5s linear}
+.ringw .time{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:46px}
+.col{background:color-mix(in srgb,var(--surface) 70%,transparent);padding:10px;border-radius:14px}
+.cols .col:nth-child(1) h3{border-color:#687653}.cols .col:nth-child(2) h3{border-color:#AD8750}.cols .col:nth-child(3) h3{border-color:#638080}.cols .col:nth-child(4) h3{border-color:#678457}
+details{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:8px 0}
+@media (prefers-reduced-motion:reduce){.rp{transition:none}}
+@media (prefers-reduced-motion:reduce){.prog i{transition:none}}
+</style>
+</head>
+<body>
+<main>
+<header class="hero">
+<h1 id="greet">Today</h1>
+<p class="sub" id="date"></p>
+<div class="prog" role="progressbar" aria-label="Today’s habits"><i id="bar"></i></div>
+<div class="stats"><span id="count"></span><span id="streak"></span></div>
+</header>
+<nav role="tablist"><button role="tab" data-t="today"><span>✅</span>Today</button><button role="tab" data-t="study"><span>⏱️</span>Focus</button><button role="tab" data-t="board"><span>🗂️</span>Board</button></nav>
+<p class="sub" style="margin:18px 0">A simple space for habits, focused work, and tasks. Your progress stays in this browser. Download a backup to move it to another device.</p>
+<details id="data-tools"><summary>Data &amp; backup</summary>
+<p id="save-status" role="status" aria-live="polite">Saved on this browser only. Cloud sync is not connected.</p>
+<div class="add"><button class="btn" id="export-data">Download backup</button><button class="btn ghost" id="restore-data">Restore backup</button><button class="btn ghost" id="reload-data" hidden>Reload saved data</button></div>
+<input id="backup-file" type="file" accept=".json,application/json" hidden>
+<p class="sub">Keep a backup before clearing browser data or moving devices. Restore replaces this browser’s Daily Focus data after confirmation.</p></details>
+<section id="today"></section>
+<section id="study" hidden></section>
+<section id="board" hidden></section>
+
+</main>
+<script>
+var KEY="daily-focus-public-v1";
+function dk(d){return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)}
+var H=[["Daily rhythm","Choose today’s priorities"],["Daily rhythm","Complete a focus session"],["Daily rhythm","Take a movement break"],["Daily rhythm","Make time to recharge"],["Daily rhythm","Review the day"]];
+var def={app:"daily-focus-public",habits:H.map(function(h,i){return{id:"h"+i,g:h[0],t:h[1]}}),done:{},subjects:["General"],sessions:[],stasks:[],board:{Active:[],"Waiting On":[],Someday:[],Done:[]}};
+var S, savedRaw=null, saveBlocked=false, storageMessage="";
+function isObject(v){return !!v&&typeof v==="object"&&!Array.isArray(v)}
+function validTimer(t){return isObject(t)&&["focus","break"].includes(t.mode)&&[25,45,50].includes(t.len)&&Number.isFinite(t.left)&&t.left>=0&&t.left<=(t.mode==="focus"?t.len*60:300)&&Number.isFinite(t.end)&&t.end>=0&&typeof t.subj==="string"&&typeof t.running==="boolean"&&(t.sessionId===null||typeof t.sessionId==="string")&&(!t.running||t.end>0)&&(t.mode!=="focus"||!t.running||!!t.sessionId)}
+function validState(x){
+ var str=function(v){return typeof v==="string"},id=function(v){return str(v)||Number.isFinite(v)},date=function(v){return str(v)&&/^\d{4}-\d{2}-\d{2}$/.test(v)},arr=function(v,f){return Array.isArray(v)&&v.every(f)};
+ return isObject(x)&&x.app==="daily-focus-public"&&arr(x.habits,function(h){return isObject(h)&&id(h.id)&&str(h.g)&&str(h.t)})&&isObject(x.done)&&Object.keys(x.done).every(function(k){return date(k)&&arr(x.done[k],id)})&&arr(x.subjects,str)&&x.subjects.length>0&&arr(x.sessions,function(v){return isObject(v)&&date(v.d)&&str(v.s)&&Number.isFinite(v.m)&&v.m>=0})&&arr(x.stasks,function(v){return isObject(v)&&id(v.id)&&str(v.t)&&str(v.s)})&&isObject(x.board)&&['Active','Waiting On','Someday','Done'].every(function(k){return arr(x.board[k],str)})&&Object.keys(x.board).every(function(k){return arr(x.board[k],str)})&&(!x.habitDays||isObject(x.habitDays)&&Object.keys(x.habitDays).every(function(k){return date(k)&&arr(x.habitDays[k],id)}))&&(!x.timer||validTimer(x.timer));
+}
+try{
+ savedRaw=localStorage.getItem(KEY);
+ S=savedRaw?JSON.parse(savedRaw):null;
+ if(S!==null){S=Object.assign({},def,S);if(!validState(S))throw new Error('Invalid saved data')}
+}catch(e){saveBlocked=true;storageMessage="Saved data could not be loaded. It has not been overwritten. Download a backup before restoring a valid file.";S=null}
+S=Object.assign({},def,S||{});
+var lastGood=JSON.stringify(S);
+function statusMessage(message){storageMessage=message;var box=document.getElementById("save-status");if(box)box.textContent=message;if(/not saved|failed|could not|another tab/i.test(message)){var panel=document.getElementById("data-tools");if(panel)panel.open=true}}
+function save(quiet){
+ try{
+  if(saveBlocked)throw new Error('blocked');
+  if(localStorage.getItem(KEY)!==savedRaw){saveBlocked=true;throw new Error('conflict')}
+  var next=JSON.stringify(S);localStorage.setItem(KEY,next);savedRaw=next;lastGood=next;
+  if(!quiet)statusMessage("Saved on this browser at "+new Date().toLocaleTimeString()+". Cloud sync is not connected.");return true;
+ }catch(e){
+  S=JSON.parse(lastGood);
+  statusMessage(saveBlocked?"Changes were not saved. Stored data is unreadable or changed in another tab. Download a backup, then reload or restore.":"Changes were not saved. Browser storage may be full or unavailable. Download a backup and free space before retrying.");
+  var reload=document.getElementById('reload-data');if(reload)reload.hidden=false;
+  return false;
+ }
+}
+function el(t,p){var e=document.createElement(t);p=p||{};for(var k in p){if(k==="text")e.textContent=p[k];else if(k.slice(0,2)==="on")e.addEventListener(k.slice(2),p[k]);else e.setAttribute(k,p[k])}
+for(var i=2;i<arguments.length;i++)if(arguments[i])e.appendChild(arguments[i]);return e}
+var $=function(id){return document.getElementById(id)};
+var TD=dk(new Date());var GC={"Daily rhythm":"#687653",Mine:"#638080"};var SC={General:"#638080"};
+var activeTab="today";
+function habitIds(){return S.habits.map(function(h){return h.id})}
+function snapshotHabits(){S.habitDays=S.habitDays||{};S.habitDays[TD]=habitIds()}
+function migrateHistory(){
+ S.habitDays=S.habitDays||{};
+ // Legacy records have no historical denominator; use current active IDs once.
+ Object.keys(S.done).forEach(function(k){if(!S.habitDays[k])S.habitDays[k]=habitIds()});
+ snapshotHabits();
+}
+function checkDay(){
+ var next=dk(new Date());if(next===TD)return false;
+ TD=next;snapshotHabits();save();head();
+ if(activeTab==="today")renderToday();if(activeTab==="study")renderStudy();
+ return true;
+}
+function doneToday(){TD=dk(new Date());if(!S.habitDays||!S.habitDays[TD])snapshotHabits();return S.done[TD]||(S.done[TD]=[])}
+function pct(k){var ids=k===TD?habitIds():(S.habitDays&&S.habitDays[k]||habitIds());var done=new Set(S.done[k]||[]);return ids.length?ids.filter(function(id){return done.has(id)}).length/ids.length:0}
+function head(){
+ var done=new Set(doneToday()),n=S.habits.filter(function(h){return done.has(h.id)}).length,t=S.habits.length;
+ $("bar").style.width=(t?n/t*100:0)+"%";$("count").textContent=n+" of "+t+" done today";
+ var progress=document.querySelector('.prog');progress.setAttribute('aria-valuemin','0');progress.setAttribute('aria-valuemax',String(t));progress.setAttribute('aria-valuenow',String(n));
+ var streak=0;for(var i=0;i<400;i++){var d=new Date();d.setDate(d.getDate()-i);if(pct(dk(d))>=.7)streak++;else if(i>0)break}
+ $("streak").textContent=streak?streak+(streak===1?" day":" days")+" streak (70% or more)":"Finish 70% to start a streak";
+ var hr=new Date().getHours();$("greet").textContent=hr<12?"Good morning":hr<18?"Good afternoon":"Good evening";
+ $("date").textContent=new Date().toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"});
+}
+function addForm(ph,cb,extra){var i=el("input",{type:"text",placeholder:ph,"aria-label":ph});
+ var f=el("div",{class:"add"},i,extra);var go=function(){if(i.value.trim()){cb(i.value.trim(),extra);i.value=""}};
+ f.appendChild(el("button",{class:"btn",text:"Add",onclick:go}));i.addEventListener("keydown",function(e){if(e.key==="Enter")go()});return f}
+function renderToday(){var r=$("today");r.textContent="";var gs=[];S.habits.forEach(function(h){if(gs.indexOf(h.g)<0)gs.push(h.g)});
+ gs.forEach(function(g){r.appendChild(el("h2",{text:g,style:"--c:"+(GC[g]||"#638080")}));S.habits.filter(function(h){return h.g===g}).forEach(function(h){
+  var on=doneToday().indexOf(h.id)>=0;
+  var c=el("input",{type:"checkbox",id:"c"+h.id,onchange:function(){var a=doneToday(),k=a.indexOf(h.id);if(k<0)a.push(h.id);else a.splice(k,1);save();renderToday();head()}});c.checked=on;
+  r.appendChild(el("div",{class:"row"+(on?" done":"")},c,el("label",{for:"c"+h.id,text:h.t}),
+   el("button",{class:"x","aria-label":"Remove "+h.t,text:"×",onclick:function(){S.habits=S.habits.filter(function(x){return x.id!==h.id});snapshotHabits();save();renderToday();head()}})))})});
+ r.appendChild(el("h2",{text:"Add a habit"}));r.appendChild(addForm("New daily habit",function(t){S.habits.push({id:"h"+Date.now(),g:"Mine",t:t});snapshotHabits();save();renderToday();head()}))}
+function uid(){return Date.now().toString(36)+"-"+Math.random().toString(36).slice(2)}
+function freshTimer(len,subject){return {mode:"focus",end:0,left:(len||25)*60,len:len||25,subj:subject||S.subjects[0],sessionId:null,running:false}}
+var T=Object.assign(freshTimer(),S.timer||{}),timerInterval=null;
+function fmt(s){s=Math.max(0,Math.ceil(s));return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")}
+function remaining(){return T.running?Math.max(0,(T.end-Date.now())/1000):T.left}
+function stopTicking(){clearInterval(timerInterval);timerInterval=null}
+function runTicker(){stopTicking();if(T.running)timerInterval=setInterval(tick,500)}
+function storeTimer(next){
+ S.timer=next;
+ if(!save()){T=Object.assign(freshTimer(),S.timer||{});stopTicking();renderStudy();paint();return false}
+ T=next;runTicker();return true;
+}
+function tick(){
+ if(!T.running)return;
+ if(remaining()>0){paint();return}
+ stopTicking();var next;
+ if(T.mode==="focus"){
+  if(!S.sessions.some(function(x){return x.id===T.sessionId}))S.sessions.push({id:T.sessionId,d:dk(new Date(T.end)),s:T.subj,m:T.len});
+  next={mode:"break",end:0,left:300,len:T.len,subj:T.subj,sessionId:null,running:false};
+ }else next=freshTimer(T.len,T.subj);
+ if(storeTimer(next)){renderStudy();paint()}
+}
+function paint(){
+ var left=remaining(),t=$("time");document.title=(T.running?fmt(left)+" · ":"")+"Daily Focus";
+ if(t){t.textContent=fmt(left);var rp=$("rp");if(rp){var tot=T.mode==="focus"?T.len*60:300;rp.style.strokeDashoffset=339.3*(1-Math.min(1,left/tot));rp.style.stroke=T.mode==="focus"?"":"var(--ok)"}$("mode").textContent=T.mode==="focus"?"Focus time":"Break time"}
+}
+function startPause(){
+ if(T.running&&remaining()<=0){tick();return}
+ var next=Object.assign({},T);
+ if(T.running){next.left=remaining();next.running=false;next.end=0}
+ else{next.sessionId=T.mode==="focus"?(T.sessionId||uid()):null;next.end=Date.now()+T.left*1000;next.running=true}
+ if(storeTimer(next)){renderStudy();paint()}
+}
+function reset(){
+ if((T.running||T.sessionId)&&!confirm("Reset this session? Unfinished focus time will not be recorded."))return;
+ if(storeTimer(freshTimer(T.len,T.subj))){renderStudy();paint()}
+}
+function renderStudy(keep){var r=$("study");r.textContent="";
+ var sel=el("select",{id:"subj","aria-label":"Focus area",onchange:function(e){if(T.running||T.sessionId)return;storeTimer(Object.assign({},T,{subj:e.target.value}))}});S.subjects.forEach(function(s){sel.appendChild(el("option",{text:s}))});if(T.subj)sel.value=T.subj;
+ var ln=el("select",{"aria-label":"Session length",onchange:function(e){if(T.running||T.sessionId||T.mode!=="focus")return;if(storeTimer(freshTimer(+e.target.value,T.subj)))paint()}});
+ sel.disabled=!!(T.running||T.sessionId||T.mode!=="focus");ln.disabled=sel.disabled;
+ [25,45,50].forEach(function(m){var o=el("option",{value:m,text:m+" min"});if(m===T.len)o.selected=true;ln.appendChild(o)});
+ var rg=el("div",{class:"ringw"});rg.innerHTML='<svg viewBox="0 0 120 120" class="ring" aria-hidden="true"><circle class="rt" cx="60" cy="60" r="54"/><circle id="rp" class="rp" cx="60" cy="60" r="54"/></svg>';rg.appendChild(el("div",{class:"time",id:"time",role:"timer"}));
+ r.appendChild(el("div",{class:"timer"},rg,el("div",{class:"mode",id:"mode"}),
+  el("div",{class:"add"},sel,ln,el("button",{class:"btn",text:T.running?(remaining()<=0?"Retry saving session":"Pause"):(T.sessionId?"Resume":"Start"),onclick:startPause}),el("button",{class:"btn ghost",text:"Reset",onclick:reset}))));paint();
+ r.appendChild(el("p",{class:"sub",text:"Sessions survive refreshes. Subject and duration stay fixed until you finish or reset. Sessions count on their completion date."}));
+ var mins=S.sessions.filter(function(x){return x.d===TD}).reduce(function(a,x){return a+x.m},0);
+ r.appendChild(el("h2",{text:"Focus time"}));r.appendChild(el("p",{class:"sub",text:"Today: "+mins+" min across "+S.sessions.filter(function(x){return x.d===TD}).length+" sessions"}));
+ var b=el("div",{class:"bars"}),mx=60;var days=[];
+ for(var i=6;i>=0;i--){var d=new Date();d.setDate(d.getDate()-i);var m=S.sessions.filter(function(x){return x.d===dk(d)}).reduce(function(a,x){return a+x.m},0);days.push([d,m]);mx=Math.max(mx,m)}
+ days.forEach(function(p){b.appendChild(el("div",{title:p[1]+" min"},el("b",{style:"height:"+(p[1]/mx*70)+"px"}),document.createTextNode(p[0].toLocaleDateString(undefined,{weekday:"narrow"}))))});r.appendChild(b);
+ var bySub={};S.sessions.forEach(function(x){if(x.d>=dk(days[0][0]))bySub[x.s]=(bySub[x.s]||0)+x.m});
+ var keys=Object.keys(bySub);if(keys.length)r.appendChild(el("p",{class:"sub",text:"This week: "+keys.map(function(k){return k+" "+bySub[k]+" min"}).join(", ")}));
+ r.appendChild(el("h2",{text:"Focus areas"}));r.appendChild(addForm("Add a focus area (e.g. Reading)",function(s){if(S.subjects.indexOf(s)<0)S.subjects.push(s);save();renderStudy(true)}));
+ r.appendChild(el("h2",{text:"Focus tasks"}));
+ if(!S.stasks.length)r.appendChild(el("p",{class:"empty",text:"No focus tasks yet. Add something you want to work on."}));
+ S.stasks.forEach(function(t){var c=el("input",{type:"checkbox",id:"s"+t.id,onchange:function(){t.done=!t.done;save();renderStudy(true)}});c.checked=!!t.done;
+  r.appendChild(el("div",{class:"row"+(t.done?" done":"")},c,el("label",{for:"s"+t.id,text:t.t}),el("span",{class:"chip",style:"--c:"+(SC[t.s]||"#7E8273"),text:t.s}),
+   el("button",{class:"x","aria-label":"Delete task",text:"×",onclick:function(){S.stasks=S.stasks.filter(function(x){return x!==t});save();renderStudy(true)}})))});
+ var ts=el("select",{"aria-label":"Task focus area"});S.subjects.forEach(function(s){ts.appendChild(el("option",{text:s}))});
+ r.appendChild(addForm("New focus task",function(t,x){S.stasks.push({id:Date.now(),t:t,s:x.value,done:false});save();renderStudy(true)},ts))}
+function renderBoard(){var r=$("board");r.textContent="";var cols=Object.keys(S.board),g=el("div",{class:"cols"});r.appendChild(el("h2",{text:"Task board"}));
+ cols.forEach(function(c,ci){var col=el("div",{class:"col"},el("h3",{text:c+" ("+S.board[c].length+")"}));
+  S.board[c].forEach(function(t,ti){var mv=el("div",{class:"mv"});
+   var mk=function(lbl,to,aria){if(to<0||to>=cols.length)return;mv.appendChild(el("button",{"aria-label":aria,text:lbl,onclick:function(){S.board[c].splice(ti,1);S.board[cols[to]].push(t);save();renderBoard()}}))};
+   mk("‹",ci-1,"Move to "+cols[ci-1]);mk("›",ci+1,"Move to "+cols[ci+1]);
+   mv.appendChild(el("button",{"aria-label":"Delete",text:"×",onclick:function(){S.board[c].splice(ti,1);save();renderBoard()}}));
+   col.appendChild(el("div",{class:"item"+(c==="Done"?" d":"")},el("span",{text:t}),mv))});
+  if(!S.board[c].length)col.appendChild(el("p",{class:"empty",text:"Nothing here"}));g.appendChild(col)});
+ r.appendChild(g);r.appendChild(el("h2",{text:"Add to Active"}));r.appendChild(addForm("New task",function(t){S.board.Active.push(t);save();renderBoard()}))}
+function show(t){checkDay();activeTab=t;["today","study","board"].forEach(function(x){$(x).hidden=x!==t});
+ document.querySelectorAll("nav button").forEach(function(b){b.setAttribute("aria-selected",b.dataset.t===t)});
+ if(t==="today")renderToday();if(t==="study")renderStudy();if(t==="board")renderBoard();}
+document.querySelectorAll("nav button").forEach(function(b){b.addEventListener("click",function(){show(b.dataset.t)})});
+
+function downloadBackup(){
+ var raw=saveBlocked&&savedRaw!==null?savedRaw:JSON.stringify({format:"daily-focus-backup",version:1,exportedAt:new Date().toISOString(),data:S},null,2);
+ var url=URL.createObjectURL(new Blob([raw],{type:"application/json"})),a=el("a",{href:url,download:"daily-focus-"+dk(new Date())+".json"});
+ document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},1000);
+}
+async function restoreBackup(file){
+ if(!file)return;
+ try{
+  if(file.size>20*1024*1024)throw new Error("Backup is too large (maximum 20 MB).");
+  var parsed=JSON.parse(await file.text());
+  if(parsed.format&&!(parsed.format==="daily-focus-backup"&&parsed.version===1))throw new Error("Unsupported backup format.");
+  var next=parsed.format?parsed.data:parsed;
+  if(!validState(next))throw new Error("This file is not a valid dashboard backup.");
+  if(!confirm("Replace this browser's habits, tasks and progress with this backup? Download a backup first if you want to keep the current data."))return;
+  // Running timers belong to their original browser. Restore them paused.
+  if(next.timer){next.timer.left=next.timer.running?Math.min(next.timer.mode==="focus"?next.timer.len*60:300,Math.max(0,(next.timer.end-Date.now())/1000)):next.timer.left;next.timer.running=false;next.timer.end=0}
+  next.timerMigration=2;
+  var nextRaw=JSON.stringify(next);
+  // Write before changing the visible state. A failed write leaves it untouched.
+  localStorage.setItem(KEY,nextRaw);savedRaw=nextRaw;lastGood=nextRaw;S=next;saveBlocked=false;
+  stopTicking();T=Object.assign(freshTimer(),S.timer||{});TD=dk(new Date());migrateHistory();paint();
+  statusMessage("Backup restored successfully. Saved on this browser only.");
+  $("reload-data").hidden=true;head();show("today");
+ }catch(e){statusMessage("Restore failed. Current dashboard was not replaced. "+e.message)}
+ finally{$("backup-file").value=""}
+}
+$("export-data").addEventListener("click",downloadBackup);
+$("restore-data").addEventListener("click",function(){$("backup-file").click()});
+$("backup-file").addEventListener("change",function(e){restoreBackup(e.target.files[0])});
+$("reload-data").addEventListener("click",function(){location.reload()});
+window.addEventListener("storage",function(e){if(e.key===KEY||e.key===null){saveBlocked=true;stopTicking();statusMessage("Data changed in another tab. Reload before making more changes.");$("reload-data").hidden=false}});
+window.addEventListener("beforeunload",function(e){if(storageMessage.indexOf("not saved")>=0){e.preventDefault();e.returnValue=""}});
+statusMessage(storageMessage||"Saved on this browser only. Cloud sync is not connected.");
+
+migrateHistory();if(!saveBlocked&&JSON.stringify(S)!==lastGood)save(true);
+T=Object.assign(freshTimer(),S.timer||{});
+document.addEventListener("click",checkDay,true);
+document.addEventListener("visibilitychange",function(){if(document.visibilityState==="visible"){checkDay();head();if(T.running&&!saveBlocked){runTicker();tick()}}});
+window.addEventListener("focus",function(){checkDay();head()});
+setInterval(checkDay,30000);
+head();show("today");runTicker();if(T.running)tick();
+</script>
+</body>
+</html>
+
+
